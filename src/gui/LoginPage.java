@@ -75,12 +75,12 @@ public class LoginPage extends JFrame {
         String password = new String(passwordField.getPassword());
 
         if (username.equals("") || password.equals("")) {
-            JOptionPane.showMessageDialog(this, "Please enter username and password.");
+            JOptionPane.showMessageDialog(this, "Enter your username and password.");
         } else {
             User user = loginSystem.login(username, password);
 
             if (user == null) {
-                JOptionPane.showMessageDialog(this, "Invalid username or password.");
+                JOptionPane.showMessageDialog(this, "The username or password is incorrect.");
             } else {
                 showLoginSuccess(user);
             }
@@ -89,11 +89,12 @@ public class LoginPage extends JFrame {
 
     private void showLoginSuccess(User user) {
         if (user.getRole().equalsIgnoreCase("Admin")) {
-            JOptionPane.showMessageDialog(this,
-                    "Login successful. Welcome Admin " + user.getFullName() + ".");
+            AdminDashboard adminDashboard = new AdminDashboard();
+            adminDashboard.setVisible(true);
+            dispose();
         } else {
             JOptionPane.showMessageDialog(this,
-                    "Login successful. Role: " + user.getRole());
+                    "Signed in as " + user.getRole() + ".");
         }
     }
 

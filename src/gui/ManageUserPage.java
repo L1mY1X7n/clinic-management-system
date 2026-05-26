@@ -1,0 +1,616 @@
+package gui;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.util.ArrayList;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import model.User;
+import service.LoginSystem;
+
+public class ManageUserPage extends JFrame {
+
+    private JLabel titleLabel;
+    private JLabel userIdLabel;
+    private JLabel usernameLabel;
+    private JLabel passwordLabel;
+    private JLabel confirmPasswordLabel;
+    private JLabel roleLabel;
+    private JLabel fullNameLabel;
+    private JLabel phoneLabel;
+    private JLabel emailLabel;
+    private JLabel usernameErrorLabel;
+    private JLabel passwordErrorLabel;
+    private JLabel confirmPasswordErrorLabel;
+    private JLabel fullNameErrorLabel;
+    private JLabel phoneErrorLabel;
+    private JLabel emailErrorLabel;
+
+    private JTextField userIdTextField;
+    private JTextField usernameTextField;
+    private JPasswordField passwordField;
+    private JPasswordField confirmPasswordField;
+    private JComboBox<String> roleComboBox;
+    private JTextField fullNameTextField;
+    private JTextField phoneTextField;
+    private JTextField emailTextField;
+
+    private JButton addButton;
+    private JButton viewButton;
+    private JButton updateButton;
+    private JButton deleteButton;
+    private JButton clearButton;
+    private JButton findButton;
+    private JButton backButton;
+
+    private JTextArea userTextArea;
+    private LoginSystem loginSystem;
+
+    public ManageUserPage() {
+        loginSystem = new LoginSystem();
+        setupFrame();
+        setupComponents();
+    }
+
+    private void setupFrame() {
+        setTitle("Manage Users");
+        setSize(720, 640);
+        setLayout(null);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setResizable(false);
+    }
+
+    private void setupComponents() {
+        titleLabel = new JLabel("Manage Users");
+        titleLabel.setBounds(300, 20, 120, 25);
+        add(titleLabel);
+
+        userIdLabel = new JLabel("User ID:");
+        userIdLabel.setBounds(40, 65, 100, 25);
+        add(userIdLabel);
+
+        userIdTextField = new JTextField();
+        userIdTextField.setBounds(150, 65, 180, 25);
+        userIdTextField.setEditable(false);
+        add(userIdTextField);
+
+        usernameLabel = new JLabel("Username:");
+        usernameLabel.setBounds(370, 65, 100, 25);
+        add(usernameLabel);
+
+        usernameTextField = new JTextField();
+        usernameTextField.setBounds(480, 65, 180, 25);
+        add(usernameTextField);
+
+        usernameErrorLabel = new JLabel("");
+        usernameErrorLabel.setBounds(480, 90, 180, 15);
+        setupErrorLabel(usernameErrorLabel);
+        add(usernameErrorLabel);
+
+        passwordLabel = new JLabel("Password:");
+        passwordLabel.setBounds(40, 115, 100, 25);
+        add(passwordLabel);
+
+        passwordField = new JPasswordField();
+        passwordField.setBounds(150, 115, 180, 25);
+        add(passwordField);
+
+        passwordErrorLabel = new JLabel("");
+        passwordErrorLabel.setBounds(150, 140, 180, 15);
+        setupErrorLabel(passwordErrorLabel);
+        add(passwordErrorLabel);
+
+        confirmPasswordLabel = new JLabel("Confirm:");
+        confirmPasswordLabel.setBounds(370, 115, 100, 25);
+        add(confirmPasswordLabel);
+
+        confirmPasswordField = new JPasswordField();
+        confirmPasswordField.setBounds(480, 115, 180, 25);
+        add(confirmPasswordField);
+
+        confirmPasswordErrorLabel = new JLabel("");
+        confirmPasswordErrorLabel.setBounds(480, 140, 180, 15);
+        setupErrorLabel(confirmPasswordErrorLabel);
+        add(confirmPasswordErrorLabel);
+
+        roleLabel = new JLabel("Role:");
+        roleLabel.setBounds(40, 165, 100, 25);
+        add(roleLabel);
+
+        roleComboBox = new JComboBox<String>();
+        roleComboBox.setBounds(150, 165, 180, 25);
+        roleComboBox.addItem("Doctor");
+        roleComboBox.addItem("Nurse");
+        roleComboBox.addItem("Receptionist");
+        add(roleComboBox);
+
+        fullNameLabel = new JLabel("Full Name:");
+        fullNameLabel.setBounds(370, 165, 100, 25);
+        add(fullNameLabel);
+
+        fullNameTextField = new JTextField();
+        fullNameTextField.setBounds(480, 165, 180, 25);
+        add(fullNameTextField);
+
+        fullNameErrorLabel = new JLabel("");
+        fullNameErrorLabel.setBounds(480, 190, 180, 15);
+        setupErrorLabel(fullNameErrorLabel);
+        add(fullNameErrorLabel);
+
+        phoneLabel = new JLabel("Phone:");
+        phoneLabel.setBounds(40, 215, 100, 25);
+        add(phoneLabel);
+
+        phoneTextField = new JTextField();
+        phoneTextField.setBounds(150, 215, 180, 25);
+        add(phoneTextField);
+
+        phoneErrorLabel = new JLabel("");
+        phoneErrorLabel.setBounds(150, 240, 180, 15);
+        setupErrorLabel(phoneErrorLabel);
+        add(phoneErrorLabel);
+
+        emailLabel = new JLabel("Email:");
+        emailLabel.setBounds(370, 215, 100, 25);
+        add(emailLabel);
+
+        emailTextField = new JTextField();
+        emailTextField.setBounds(480, 215, 180, 25);
+        add(emailTextField);
+
+        emailErrorLabel = new JLabel("");
+        emailErrorLabel.setBounds(480, 240, 180, 15);
+        setupErrorLabel(emailErrorLabel);
+        add(emailErrorLabel);
+
+        addButton = new JButton("Add User");
+        addButton.setBounds(40, 280, 130, 35);
+        add(addButton);
+
+        viewButton = new JButton("View Users");
+        viewButton.setBounds(195, 280, 130, 35);
+        add(viewButton);
+
+        updateButton = new JButton("Update User");
+        updateButton.setBounds(350, 280, 130, 35);
+        add(updateButton);
+
+        deleteButton = new JButton("Delete User");
+        deleteButton.setBounds(505, 280, 130, 35);
+        add(deleteButton);
+
+        clearButton = new JButton("Clear");
+        clearButton.setBounds(195, 330, 130, 35);
+        add(clearButton);
+
+        findButton = new JButton("Find User");
+        findButton.setBounds(350, 330, 130, 35);
+        add(findButton);
+
+        backButton = new JButton("Back");
+        backButton.setBounds(20, 15, 80, 30);
+        add(backButton);
+
+        userTextArea = new JTextArea();
+        userTextArea.setBounds(40, 385, 620, 180);
+        userTextArea.setEditable(false);
+        add(userTextArea);
+
+        addButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addButtonActionPerformed();
+            }
+        });
+
+        viewButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewButtonActionPerformed();
+            }
+        });
+
+        updateButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateButtonActionPerformed();
+            }
+        });
+
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed();
+            }
+        });
+
+        clearButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearButtonActionPerformed();
+            }
+        });
+
+        findButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                findButtonActionPerformed();
+            }
+        });
+
+        backButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backButtonActionPerformed();
+            }
+        });
+
+        setNextUserId();
+    }
+
+    private void addButtonActionPerformed() {
+        if (!isInputValid()) {
+            return;
+        } else if (loginSystem.isUsernameExists(usernameTextField.getText().trim())) {
+            usernameErrorLabel.setText("Username is taken");
+            return;
+        } else {
+            User user = createUserFromInput();
+            boolean success = loginSystem.addUser(user);
+
+            if (success) {
+                JOptionPane.showMessageDialog(this, "User added successfully.");
+                clearFields();
+                displayUsers();
+            } else {
+                JOptionPane.showMessageDialog(this, "Please check the details and try again.");
+            }
+        }
+    }
+
+    private void viewButtonActionPerformed() {
+        displayUsers();
+    }
+
+    private void updateButtonActionPerformed() {
+        if (!loginSystem.isUserIdExists(userIdTextField.getText().trim())) {
+            JOptionPane.showMessageDialog(this, "Find a user before updating.");
+        } else if (!isInputValid()) {
+            return;
+        } else {
+            User user = createUserFromInput();
+            boolean success = loginSystem.updateUser(user);
+
+            if (success) {
+                JOptionPane.showMessageDialog(this, "User updated successfully.");
+                clearFields();
+                displayUsers();
+            } else {
+                usernameErrorLabel.setText("Username is taken");
+            }
+        }
+    }
+
+    private void deleteButtonActionPerformed() {
+        String userId = userIdTextField.getText().trim();
+
+        if (userId.equals("")) {
+            JOptionPane.showMessageDialog(this, "Find a user before deleting.");
+        } else if (!loginSystem.isUserIdExists(userId)) {
+            JOptionPane.showMessageDialog(this, "No user found with that ID.");
+        } else {
+            boolean success = loginSystem.deleteUser(userId);
+
+            if (success) {
+                JOptionPane.showMessageDialog(this, "User deleted successfully.");
+                clearFields();
+                displayUsers();
+            } else {
+                JOptionPane.showMessageDialog(this, "This account cannot be deleted here.");
+            }
+        }
+    }
+
+    private void clearButtonActionPerformed() {
+        clearFields();
+    }
+
+    private void findButtonActionPerformed() {
+        String userId = JOptionPane.showInputDialog(this, "Enter the User ID:");
+
+        if (userId == null) {
+            return;
+        }
+
+        userId = userId.trim();
+
+        if (userId.equals("")) {
+            JOptionPane.showMessageDialog(this, "Enter a User ID to continue.");
+        } else {
+            User user = findUserById(userId);
+
+            if (user == null) {
+                JOptionPane.showMessageDialog(this, "No user found with that ID.");
+            } else if (!loginSystem.isStaffRole(user.getRole())) {
+                JOptionPane.showMessageDialog(this, "Only staff accounts can be managed here.");
+            } else {
+                fillFields(user);
+            }
+        }
+    }
+
+    private void backButtonActionPerformed() {
+        AdminDashboard adminDashboard = new AdminDashboard();
+        adminDashboard.setVisible(true);
+        dispose();
+    }
+
+    private boolean isInputEmpty() {
+        if (userIdTextField.getText().trim().equals("")) {
+            return true;
+        } else if (usernameTextField.getText().trim().equals("")) {
+            return true;
+        } else if (new String(passwordField.getPassword()).trim().equals("")) {
+            return true;
+        } else if (new String(confirmPasswordField.getPassword()).trim().equals("")) {
+            return true;
+        } else if (fullNameTextField.getText().trim().equals("")) {
+            return true;
+        } else if (phoneTextField.getText().trim().equals("")) {
+            return true;
+        } else if (emailTextField.getText().trim().equals("")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private boolean isInputValid() {
+        clearErrorLabels();
+
+        String username = usernameTextField.getText().trim();
+        String password = new String(passwordField.getPassword()).trim();
+        String confirmPassword = new String(confirmPasswordField.getPassword()).trim();
+        String fullName = fullNameTextField.getText().trim();
+        String phone = phoneTextField.getText().trim();
+        String email = emailTextField.getText().trim();
+
+        if (isInputEmpty()) {
+            setRequiredErrors();
+            return false;
+        } else if (!isUsernameValid(username)) {
+            usernameErrorLabel.setText("Use 4-15 letters/numbers");
+            return false;
+        } else if (password.length() < 4 || password.length() > 20) {
+            passwordErrorLabel.setText("Use 4-20 characters");
+            return false;
+        } else if (!password.equals(confirmPassword)) {
+            confirmPasswordErrorLabel.setText("Passwords must match");
+            return false;
+        } else if (fullName.length() > 50) {
+            fullNameErrorLabel.setText("Keep under 50 characters");
+            return false;
+        } else if (!isPhoneValid(phone)) {
+            phoneErrorLabel.setText("Use 10-12 digits");
+            return false;
+        } else if (!isEmailValid(email)) {
+            emailErrorLabel.setText("Enter a valid email");
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private boolean isUsernameValid(String username) {
+        if (username.length() < 4 || username.length() > 15) {
+            return false;
+        }
+
+        for (int i = 0; i < username.length(); i++) {
+            char letter = username.charAt(i);
+
+            if (!isLetterOrNumber(letter)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean isLetterOrNumber(char letter) {
+        if (letter >= 'A' && letter <= 'Z') {
+            return true;
+        } else if (letter >= 'a' && letter <= 'z') {
+            return true;
+        } else if (letter >= '0' && letter <= '9') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private boolean isPhoneValid(String phone) {
+        if (phone.length() < 10 || phone.length() > 12) {
+            return false;
+        }
+
+        for (int i = 0; i < phone.length(); i++) {
+            char number = phone.charAt(i);
+
+            if (number < '0' || number > '9') {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean isEmailValid(String email) {
+        int atPosition = email.indexOf("@");
+        int dotPosition = email.lastIndexOf(".");
+
+        if (email.length() < 5 || email.length() > 40) {
+            return false;
+        } else if (email.indexOf(" ") >= 0) {
+            return false;
+        } else if (atPosition <= 0) {
+            return false;
+        } else if (dotPosition <= atPosition + 1) {
+            return false;
+        } else if (dotPosition == email.length() - 1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private User createUserFromInput() {
+        String userId = userIdTextField.getText().trim();
+        String username = usernameTextField.getText().trim();
+        String password = new String(passwordField.getPassword()).trim();
+        String role = roleComboBox.getSelectedItem().toString();
+        String fullName = fullNameTextField.getText().trim();
+        String phone = phoneTextField.getText().trim();
+        String email = emailTextField.getText().trim();
+
+        User user = new User(userId, username, password, role, fullName, phone, email);
+        return user;
+    }
+
+    private void displayUsers() {
+        loginSystem.loadUsers();
+
+        ArrayList<User> users = loginSystem.getAllUsers();
+        String output = "";
+
+        output = output + "ID\tUsername\tRole\tName\tPhone\tEmail\n";
+        output = output + "------------------------------------------------------------\n";
+
+        for (int i = 0; i < users.size(); i++) {
+            User user = users.get(i);
+
+            if (loginSystem.isStaffRole(user.getRole())) {
+                output = output + user.getUserId() + "\t"
+                        + user.getUsername() + "\t"
+                        + user.getRole() + "\t"
+                        + user.getFullName() + "\t"
+                        + user.getPhone() + "\t"
+                        + user.getEmail() + "\n";
+            }
+        }
+
+        userTextArea.setText(output);
+    }
+
+    private void clearFields() {
+        usernameTextField.setText("");
+        passwordField.setText("");
+        confirmPasswordField.setText("");
+        fullNameTextField.setText("");
+        phoneTextField.setText("");
+        emailTextField.setText("");
+        roleComboBox.setSelectedIndex(0);
+        clearErrorLabels();
+        setNextUserId();
+    }
+
+    private void setupErrorLabel(JLabel label) {
+        label.setForeground(Color.RED);
+        label.setFont(new Font("Arial", Font.PLAIN, 11));
+    }
+
+    private void clearErrorLabels() {
+        usernameErrorLabel.setText("");
+        passwordErrorLabel.setText("");
+        confirmPasswordErrorLabel.setText("");
+        fullNameErrorLabel.setText("");
+        phoneErrorLabel.setText("");
+        emailErrorLabel.setText("");
+    }
+
+    private void setRequiredErrors() {
+        if (usernameTextField.getText().trim().equals("")) {
+            usernameErrorLabel.setText("Please fill this in");
+        }
+
+        if (new String(passwordField.getPassword()).trim().equals("")) {
+            passwordErrorLabel.setText("Please fill this in");
+        }
+
+        if (new String(confirmPasswordField.getPassword()).trim().equals("")) {
+            confirmPasswordErrorLabel.setText("Please fill this in");
+        }
+
+        if (fullNameTextField.getText().trim().equals("")) {
+            fullNameErrorLabel.setText("Please fill this in");
+        }
+
+        if (phoneTextField.getText().trim().equals("")) {
+            phoneErrorLabel.setText("Please fill this in");
+        }
+
+        if (emailTextField.getText().trim().equals("")) {
+            emailErrorLabel.setText("Please fill this in");
+        }
+    }
+
+    private void setNextUserId() {
+        userIdTextField.setText(getNextUserId());
+    }
+
+    private String getNextUserId() {
+        loginSystem.loadUsers();
+
+        ArrayList<User> users = loginSystem.getAllUsers();
+        int biggestId = 0;
+
+        for (int i = 0; i < users.size(); i++) {
+            String userId = users.get(i).getUserId();
+
+            try {
+                int currentId = Integer.parseInt(userId);
+
+                if (currentId > biggestId) {
+                    biggestId = currentId;
+                }
+            } catch (Exception e) {
+                // Ignore IDs like A001 because staff IDs use numbers.
+            }
+        }
+
+        return "" + (biggestId + 1);
+    }
+
+    private User findUserById(String userId) {
+        loginSystem.loadUsers();
+
+        ArrayList<User> users = loginSystem.getAllUsers();
+
+        for (int i = 0; i < users.size(); i++) {
+            User user = users.get(i);
+
+            if (user.getUserId().equals(userId)) {
+                return user;
+            }
+        }
+
+        return null;
+    }
+
+    private void fillFields(User user) {
+        userIdTextField.setText(user.getUserId());
+        usernameTextField.setText(user.getUsername());
+        passwordField.setText(user.getPassword());
+        confirmPasswordField.setText(user.getPassword());
+        roleComboBox.setSelectedItem(user.getRole());
+        fullNameTextField.setText(user.getFullName());
+        phoneTextField.setText(user.getPhone());
+        emailTextField.setText(user.getEmail());
+        clearErrorLabels();
+    }
+
+    public static void main(String[] args) {
+        ManageUserPage manageUserPage = new ManageUserPage();
+        manageUserPage.setVisible(true);
+    }
+}
