@@ -4,10 +4,20 @@
  */
 package model;
 
-/**
- *
- * @author wwndr
- */
-public class Admin {
-    
+public class Admin extends User {
+
+    public Admin() {
+        super();
+        setRole("Admin");
+    }
+
+    public Admin(String userId, String username, String password,
+            String fullName, String phone, String email) {
+        super(userId, username, password, "Admin", fullName, phone, email);
+    }
+
+    @Override
+    public String getUserType() {
+        return "Admin";
+    }
 }
