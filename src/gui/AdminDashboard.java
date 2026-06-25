@@ -7,7 +7,6 @@ package gui;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class AdminDashboard extends JFrame {
@@ -51,7 +50,7 @@ public class AdminDashboard extends JFrame {
         manageRosterButton.setBounds(110, 115, 170, 35);
         mainPanel.add(manageRosterButton);
 
-        revenueReportButton = new JButton("Revenue Report");
+        revenueReportButton = new JButton("Revenue Reports");
         revenueReportButton.setBounds(110, 160, 170, 35);
         mainPanel.add(revenueReportButton);
 
@@ -91,15 +90,18 @@ public class AdminDashboard extends JFrame {
     }
 
     private void manageRosterButtonActionPerformed() {
-        JOptionPane.showMessageDialog(this, "Manage Roster page will be added later.");
+        ManageRosterPage manageRosterPage = new ManageRosterPage();
+        manageRosterPage.setVisible(true);
+        dispose();
     }
 
     private void revenueReportButtonActionPerformed() {
-        JOptionPane.showMessageDialog(this, "Revenue Report page will be added later.");
+        RevenueReportPage revenueReportPage = new RevenueReportPage();
+        revenueReportPage.setVisible(true);
+        dispose();
     }
 
     private void logoutButtonActionPerformed() {
-        JOptionPane.showMessageDialog(this, "Logout successful.");
         LoginPage loginPage = new LoginPage();
         loginPage.setVisible(true);
         dispose();

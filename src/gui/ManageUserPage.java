@@ -9,8 +9,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
-import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 import model.User;
 import service.LoginSystem;
 
@@ -42,25 +44,26 @@ public class ManageUserPage extends JFrame {
     private JTextField emailTextField;
 
     private JButton addButton;
-    private JButton viewButton;
     private JButton updateButton;
     private JButton deleteButton;
     private JButton clearButton;
-    private JButton findButton;
     private JButton backButton;
 
-    private JTextArea userTextArea;
+    private JTable userTable;
+    private JScrollPane userScrollPane;
+    private DefaultTableModel userTableModel;
     private LoginSystem loginSystem;
 
     public ManageUserPage() {
         loginSystem = new LoginSystem();
         setupFrame();
         setupComponents();
+        displayUsers();
     }
 
     private void setupFrame() {
         setTitle("Manage Users");
-        setSize(720, 640);
+        setSize(800, 650);
         setLayout(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -69,7 +72,7 @@ public class ManageUserPage extends JFrame {
 
     private void setupComponents() {
         titleLabel = new JLabel("Manage Users");
-        titleLabel.setBounds(300, 20, 120, 25);
+        titleLabel.setBounds(340, 20, 120, 25);
         add(titleLabel);
 
         userIdLabel = new JLabel("User ID:");
@@ -82,15 +85,15 @@ public class ManageUserPage extends JFrame {
         add(userIdTextField);
 
         usernameLabel = new JLabel("Username:");
-        usernameLabel.setBounds(370, 65, 100, 25);
+        usernameLabel.setBounds(410, 65, 100, 25);
         add(usernameLabel);
 
         usernameTextField = new JTextField();
-        usernameTextField.setBounds(480, 65, 180, 25);
+        usernameTextField.setBounds(520, 65, 210, 25);
         add(usernameTextField);
 
         usernameErrorLabel = new JLabel("");
-        usernameErrorLabel.setBounds(480, 90, 180, 15);
+        usernameErrorLabel.setBounds(520, 90, 210, 15);
         setupErrorLabel(usernameErrorLabel);
         add(usernameErrorLabel);
 
@@ -108,15 +111,15 @@ public class ManageUserPage extends JFrame {
         add(passwordErrorLabel);
 
         confirmPasswordLabel = new JLabel("Confirm:");
-        confirmPasswordLabel.setBounds(370, 115, 100, 25);
+        confirmPasswordLabel.setBounds(410, 115, 100, 25);
         add(confirmPasswordLabel);
 
         confirmPasswordField = new JPasswordField();
-        confirmPasswordField.setBounds(480, 115, 180, 25);
+        confirmPasswordField.setBounds(520, 115, 210, 25);
         add(confirmPasswordField);
 
         confirmPasswordErrorLabel = new JLabel("");
-        confirmPasswordErrorLabel.setBounds(480, 140, 180, 15);
+        confirmPasswordErrorLabel.setBounds(520, 140, 210, 15);
         setupErrorLabel(confirmPasswordErrorLabel);
         add(confirmPasswordErrorLabel);
 
@@ -132,15 +135,15 @@ public class ManageUserPage extends JFrame {
         add(roleComboBox);
 
         fullNameLabel = new JLabel("Full Name:");
-        fullNameLabel.setBounds(370, 165, 100, 25);
+        fullNameLabel.setBounds(410, 165, 100, 25);
         add(fullNameLabel);
 
         fullNameTextField = new JTextField();
-        fullNameTextField.setBounds(480, 165, 180, 25);
+        fullNameTextField.setBounds(520, 165, 210, 25);
         add(fullNameTextField);
 
         fullNameErrorLabel = new JLabel("");
-        fullNameErrorLabel.setBounds(480, 190, 180, 15);
+        fullNameErrorLabel.setBounds(520, 190, 210, 15);
         setupErrorLabel(fullNameErrorLabel);
         add(fullNameErrorLabel);
 
@@ -158,15 +161,15 @@ public class ManageUserPage extends JFrame {
         add(phoneErrorLabel);
 
         emailLabel = new JLabel("Email:");
-        emailLabel.setBounds(370, 215, 100, 25);
+        emailLabel.setBounds(410, 215, 100, 25);
         add(emailLabel);
 
         emailTextField = new JTextField();
-        emailTextField.setBounds(480, 215, 180, 25);
+        emailTextField.setBounds(520, 215, 210, 25);
         add(emailTextField);
 
         emailErrorLabel = new JLabel("");
-        emailErrorLabel.setBounds(480, 240, 180, 15);
+        emailErrorLabel.setBounds(520, 240, 210, 15);
         setupErrorLabel(emailErrorLabel);
         add(emailErrorLabel);
 
@@ -174,44 +177,39 @@ public class ManageUserPage extends JFrame {
         addButton.setBounds(40, 280, 130, 35);
         add(addButton);
 
-        viewButton = new JButton("View Users");
-        viewButton.setBounds(195, 280, 130, 35);
-        add(viewButton);
-
         updateButton = new JButton("Update User");
-        updateButton.setBounds(350, 280, 130, 35);
+        updateButton.setBounds(190, 280, 130, 35);
         add(updateButton);
 
         deleteButton = new JButton("Delete User");
-        deleteButton.setBounds(505, 280, 130, 35);
+        deleteButton.setBounds(340, 280, 130, 35);
         add(deleteButton);
 
         clearButton = new JButton("Clear");
-        clearButton.setBounds(195, 330, 130, 35);
+        clearButton.setBounds(490, 280, 110, 35);
         add(clearButton);
 
-        findButton = new JButton("Find User");
-        findButton.setBounds(350, 330, 130, 35);
-        add(findButton);
-
         backButton = new JButton("Back");
-        backButton.setBounds(20, 15, 80, 30);
+        backButton.setBounds(620, 280, 110, 35);
         add(backButton);
 
-        userTextArea = new JTextArea();
-        userTextArea.setBounds(40, 385, 620, 180);
-        userTextArea.setEditable(false);
-        add(userTextArea);
+        String[] columns = {"User ID", "Username", "Role", "Full Name", "Phone", "Email"};
+        userTableModel = new DefaultTableModel(columns, 0) {
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        userTable = new JTable(userTableModel);
+        userTable.setAutoCreateRowSorter(true);
+        userTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        userScrollPane = new JScrollPane(userTable);
+        userScrollPane.setBounds(40, 340, 700, 230);
+        add(userScrollPane);
 
         addButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addButtonActionPerformed();
-            }
-        });
-
-        viewButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewButtonActionPerformed();
             }
         });
 
@@ -233,15 +231,15 @@ public class ManageUserPage extends JFrame {
             }
         });
 
-        findButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                findButtonActionPerformed();
-            }
-        });
-
         backButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 backButtonActionPerformed();
+            }
+        });
+
+        userTable.getSelectionModel().addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                tableRowSelected();
             }
         });
 
@@ -249,6 +247,8 @@ public class ManageUserPage extends JFrame {
     }
 
     private void addButtonActionPerformed() {
+        setNextUserId();
+
         if (!isInputValid()) {
             return;
         } else if (loginSystem.isUsernameExists(usernameTextField.getText().trim())) {
@@ -268,13 +268,11 @@ public class ManageUserPage extends JFrame {
         }
     }
 
-    private void viewButtonActionPerformed() {
-        displayUsers();
-    }
-
     private void updateButtonActionPerformed() {
-        if (!loginSystem.isUserIdExists(userIdTextField.getText().trim())) {
-            JOptionPane.showMessageDialog(this, "Find a user before updating.");
+        if (userTable.getSelectedRow() < 0) {
+            JOptionPane.showMessageDialog(this, "Select a user from the table before updating.");
+        } else if (!loginSystem.isUserIdExists(userIdTextField.getText().trim())) {
+            JOptionPane.showMessageDialog(this, "Selected user no longer exists.");
         } else if (!isInputValid()) {
             return;
         } else {
@@ -292,13 +290,35 @@ public class ManageUserPage extends JFrame {
     }
 
     private void deleteButtonActionPerformed() {
-        String userId = userIdTextField.getText().trim();
+        if (userTable.getSelectedRow() < 0) {
+            JOptionPane.showMessageDialog(this, "Select a user from the table before deleting.");
+            return;
+        }
 
-        if (userId.equals("")) {
-            JOptionPane.showMessageDialog(this, "Find a user before deleting.");
-        } else if (!loginSystem.isUserIdExists(userId)) {
-            JOptionPane.showMessageDialog(this, "No user found with that ID.");
-        } else {
+        String userId = userIdTextField.getText().trim();
+        User selectedUser = findUserById(userId);
+
+        if (selectedUser != null && selectedUser.getRole().equalsIgnoreCase("Admin")) {
+            JOptionPane.showMessageDialog(this, "Admin account cannot be deleted.");
+            return;
+        }
+
+        if (userId.equalsIgnoreCase("A001")) {
+            JOptionPane.showMessageDialog(this, "Admin account cannot be deleted.");
+            return;
+        }
+
+        if (!loginSystem.isUserIdExists(userId)) {
+            JOptionPane.showMessageDialog(this, "Selected user no longer exists.");
+            return;
+        }
+
+        int confirm = JOptionPane.showConfirmDialog(this,
+                "Delete selected user?",
+                "Confirm Delete",
+                JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
             boolean success = loginSystem.deleteUser(userId);
 
             if (success) {
@@ -315,34 +335,25 @@ public class ManageUserPage extends JFrame {
         clearFields();
     }
 
-    private void findButtonActionPerformed() {
-        String userId = JOptionPane.showInputDialog(this, "Enter the User ID:");
-
-        if (userId == null) {
-            return;
-        }
-
-        userId = userId.trim();
-
-        if (userId.equals("")) {
-            JOptionPane.showMessageDialog(this, "Enter a User ID to continue.");
-        } else {
-            User user = findUserById(userId);
-
-            if (user == null) {
-                JOptionPane.showMessageDialog(this, "No user found with that ID.");
-            } else if (!loginSystem.isStaffRole(user.getRole())) {
-                JOptionPane.showMessageDialog(this, "Only staff accounts can be managed here.");
-            } else {
-                fillFields(user);
-            }
-        }
-    }
-
     private void backButtonActionPerformed() {
         AdminDashboard adminDashboard = new AdminDashboard();
         adminDashboard.setVisible(true);
         dispose();
+    }
+
+    private void tableRowSelected() {
+        if (userTable.getSelectedRow() < 0) {
+            return;
+        }
+
+        int selectedRow = userTable.getSelectedRow();
+        int modelRow = userTable.convertRowIndexToModel(selectedRow);
+        String userId = userTableModel.getValueAt(modelRow, 0).toString();
+        User user = findUserById(userId);
+
+        if (user != null) {
+            fillFields(user);
+        }
     }
 
     private boolean isInputEmpty() {
@@ -479,27 +490,26 @@ public class ManageUserPage extends JFrame {
 
     private void displayUsers() {
         loginSystem.loadUsers();
+        userTableModel.setRowCount(0);
 
         ArrayList<User> users = loginSystem.getAllUsers();
-        String output = "";
-
-        output = output + "ID\tUsername\tRole\tName\tPhone\tEmail\n";
-        output = output + "------------------------------------------------------------\n";
 
         for (int i = 0; i < users.size(); i++) {
             User user = users.get(i);
 
             if (loginSystem.isStaffRole(user.getRole())) {
-                output = output + user.getUserId() + "\t"
-                        + user.getUsername() + "\t"
-                        + user.getRole() + "\t"
-                        + user.getFullName() + "\t"
-                        + user.getPhone() + "\t"
-                        + user.getEmail() + "\n";
+                Object[] row = {
+                    user.getUserId(),
+                    user.getUsername(),
+                    user.getRole(),
+                    user.getFullName(),
+                    user.getPhone(),
+                    user.getEmail()
+                };
+
+                userTableModel.addRow(row);
             }
         }
-
-        userTextArea.setText(output);
     }
 
     private void clearFields() {
@@ -510,6 +520,7 @@ public class ManageUserPage extends JFrame {
         phoneTextField.setText("");
         emailTextField.setText("");
         roleComboBox.setSelectedIndex(0);
+        userTable.clearSelection();
         clearErrorLabels();
         setNextUserId();
     }

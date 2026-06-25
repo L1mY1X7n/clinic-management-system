@@ -1,5 +1,6 @@
 A001,admin,admin123,Admin,System Admin,,admin@clinic.local
-1,1,1,Doctor,1,1,1
-2,2,2,Doctor,2,1,1
-3,sasa,asas,Doctor,asasa,1111111111,asasa@gmail.com
-4,dsadsa,aaaa,Doctor,dsad,12342132111,dsadsa@gmail.com
+1,ccccccc,asdfghjkl;',Nurse,mi,1234567890,mi@gmail.com
+2,bbbbbbb,asdfghjkl;',Nurse,mib,1234567890,mib@gmail.com
+3,aaaaaaaa,asdfghjkl;',Nurse,miba,1234567897,miba@gmail.com
+4,ddddddd,asdfghjkl;',Doctor,mibad,1234567897,mibad@gmail.com
+5,fffffffff,asdfghjkl;',Doctor,mibadf,1234567897,mibadf@gmail.com
