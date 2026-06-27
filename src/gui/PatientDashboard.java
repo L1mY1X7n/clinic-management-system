@@ -122,7 +122,7 @@ public class PatientDashboard extends javax.swing.JFrame {
     }
     
     //View Prescriptions
-    private void showPrescriptionsTable() {
+    private void viewPrescriptions() {
         String[] columnNames = {"Prescription ID","Patient ID","Doctor ID","Date","Medicine","Dosage","Instructions"};
         DefaultTableModel model = new DefaultTableModel(columnNames, 0);
         File file = new File("src/data/prescriptions.txt");
@@ -269,7 +269,7 @@ public class PatientDashboard extends javax.swing.JFrame {
     }                                                 
 
     private void btnPrescriptionsActionPerformed(java.awt.event.ActionEvent evt) {                                                 
-        // TODO add your handling code here:
+        viewPrescriptions();
     }                                                
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {                                          
