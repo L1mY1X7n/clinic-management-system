@@ -1,5 +1,6 @@
 package model;
 
+
 public class Appointment {
     private String appointmentId;
     private String patientId;
