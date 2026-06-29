@@ -1,0 +1,5 @@
+U001,nurse1,pass123,nurse,Nurse Alice,0123456789,nurse1@example.com
+U002,p010,pass123,patient,James Tan,0111111111,p010@example.com
+U003,p014,pass123,patient,Sarah Lim,0122222222,p014@example.com
+U004,p019,pass123,patient,Wei Chong,0133333333,p019@example.com
+U005,nurse2,pass123,nurse,Nurse Bee,0144444444,nurse2@example.com
