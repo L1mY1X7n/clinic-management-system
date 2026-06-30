@@ -88,8 +88,13 @@ public class Appointment {
         this.status = status;
     }
 
+    public String toFileString() {
+        return appointmentId + "," + patientId + "," + doctorId + ","
+                + nurseId + "," + date + "," + time + "," + type + ","
+                + status;
+    }
+
     public static Appointment fromFileString(String line) {
-        // TODO: Appointment format is a Doctor-module draft until Receptionist confirms it.
         String[] parts = line.split(",", -1);
         if (parts.length != 8) {
             throw new IllegalArgumentException("Invalid appointment format");
