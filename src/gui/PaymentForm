@@ -1,0 +1,55 @@
+package GUI;
+
+import javax.swing.*;
+import java.awt.*;
+import java.io.*;
+import javax.swing.border.EmptyBorder;
+
+public class PaymentForm extends JFrame {
+  
+    private JTextField txtApptId, txtAmount;
+
+    public PaymentForm() {
+        setTitle("Make Payment");
+        setSize(350, 250);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+       
+        JPanel panel = new JPanel();
+        panel.setBorder(new EmptyBorder(20, 20, 20, 20));
+        panel.setLayout(new GridLayout(3, 2, 10, 10));
+
+        // Add components
+        panel.add(new JLabel("Appt ID:"));
+        txtApptId = new JTextField();
+        panel.add(txtApptId);
+
+        panel.add(new JLabel("Amount:"));
+        txtAmount = new JTextField();
+        panel.add(txtAmount);
+
+        JButton btnPay = new JButton("Confirm Payment");
+        panel.add(btnPay);
+
+        // Button Logic
+        btnPay.addActionListener(e -> {
+            String record = txtApptId.getText() + "," + txtAmount.getText();
+            try (BufferedWriter w = new BufferedWriter(new FileWriter("data/payments.txt", true))) {
+                w.write(record);
+                w.newLine();
+                JOptionPane.showMessageDialog(this, "Payment Saved Successfully!");
+                dispose();
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
+            }
+        });
+
+        add(panel);
+    }
+
+    // Startup Entry
+    public static void main(String args[]) {
+        java.awt.EventQueue.invokeLater(() -> new PaymentForm().setVisible(true));
+    }
+}
