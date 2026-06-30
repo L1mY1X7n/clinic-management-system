@@ -1,0 +1,67 @@
+package GUI;
+
+import model.Appointment; 
+import javax.swing.*;
+import java.awt.*;
+import java.io.*;
+import javax.swing.border.EmptyBorder;
+
+public class AppointmentForm extends JFrame {
+    private JTextField txtApptId, txtPatientId, txtDocId, txtDate, txtTime;
+
+    public AppointmentForm() {
+        setTitle("Book Appointment");
+        setSize(400, 400); 
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        // Create a panel and add padding.
+        JPanel panel = new JPanel();
+        panel.setBorder(new EmptyBorder(20, 20, 20, 20));
+        panel.setLayout(new GridLayout(6, 2, 10, 10)); 
+
+        // Add components
+        panel.add(new JLabel("Appt ID:")); txtApptId = new JTextField(); panel.add(txtApptId);
+        panel.add(new JLabel("Patient ID:")); txtPatientId = new JTextField(); panel.add(txtPatientId);
+        panel.add(new JLabel("Doctor ID:")); txtDocId = new JTextField(); panel.add(txtDocId);
+        panel.add(new JLabel("Date (DD/MM):")); txtDate = new JTextField(); panel.add(txtDate);
+        panel.add(new JLabel("Time (HH:MM):")); txtTime = new JTextField(); panel.add(txtTime);
+
+        JButton btnSave = new JButton("Save Appointment");
+        panel.add(btnSave);
+
+        // Button Logic
+        btnSave.addActionListener(e -> saveAppointment());
+
+        add(panel);
+    }
+
+    private void saveAppointment() {
+       
+        Appointment appt = new Appointment(
+            txtApptId.getText(),
+            txtPatientId.getText(),
+            txtDocId.getText(),
+            txtDate.getText(),
+            txtTime.getText(),
+            "Pending"
+        );
+
+        String record = appt.getAppointmentId() + "," + appt.getPatientId() + "," + 
+                        appt.getDoctorId() + "," + appt.getDate() + "," + 
+                        appt.getTime() + "," + appt.getStatus();
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("data/appointments.txt", true))) {
+            writer.write(record);
+            writer.newLine();
+            JOptionPane.showMessageDialog(this, "Appointment Booked!");
+            dispose();
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
+        }
+    }
+
+    public static void main(String args[]) {
+        java.awt.EventQueue.invokeLater(() -> new AppointmentForm().setVisible(true));
+    }
+}
