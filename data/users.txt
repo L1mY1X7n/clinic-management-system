@@ -4,3 +4,5 @@ A001,admin,admin123,Admin,System Admin,,admin@clinic.local
 3,Siti,123456,Nurse,Siti,0165238978,siti2@gmail.com
 4,Imin,123456,Nurse,Imin,0165239797,Imin2@gmail.com
 5,Hajib,123456,Nurse,Hajib,0187761111,hajib2@gmail.com
+6,receptionist,123456,Receptionist,Receptionist User,0191234567,receptionist@clinic.local
+PT001,patient,123456,Patient,Sample Patient,0197654321,patient@clinic.local

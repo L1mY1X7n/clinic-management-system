@@ -79,6 +79,7 @@ public class DoctorDashboard extends JFrame {
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 dispose();
+                new LoginPage().setVisible(true);
             }
         });
         add(jButton5);

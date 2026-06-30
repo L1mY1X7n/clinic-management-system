@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import model.Doctor;
 import model.User;
 import service.LoginSystem;
 
@@ -92,9 +93,29 @@ public class LoginPage extends JFrame {
             AdminDashboard adminDashboard = new AdminDashboard();
             adminDashboard.setVisible(true);
             dispose();
+        } else if (user.getRole().equalsIgnoreCase("Doctor")) {
+            Doctor doctor = new Doctor(user.getUserId(), user.getUsername(),
+                    user.getPassword(), user.getRole(), user.getFullName(),
+                    user.getPhone(), user.getEmail());
+            DoctorDashboard doctorDashboard = new DoctorDashboard(doctor);
+            doctorDashboard.setVisible(true);
+            dispose();
+        } else if (user.getRole().equalsIgnoreCase("Nurse")) {
+            NurseDashboard nurseDashboard = new NurseDashboard(user.getUserId());
+            nurseDashboard.setVisible(true);
+            dispose();
+        } else if (user.getRole().equalsIgnoreCase("Receptionist")) {
+            ReceptionistDashboard receptionistDashboard = new ReceptionistDashboard();
+            receptionistDashboard.setVisible(true);
+            dispose();
+        } else if (user.getRole().equalsIgnoreCase("Patient")) {
+            PatientDashboard patientDashboard = new PatientDashboard(
+                    user.getUserId(), user.getFullName());
+            patientDashboard.setVisible(true);
+            dispose();
         } else {
             JOptionPane.showMessageDialog(this,
-                    "Signed in as " + user.getRole() + ".");
+                    "Unknown user role: " + user.getRole());
         }
     }
 
