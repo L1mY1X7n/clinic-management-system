@@ -72,9 +72,11 @@ public class NurseRosterGUI extends JFrame {
                         || roster.getNurse2Id().equalsIgnoreCase(nurseId)
                         || roster.getNurse3Id().equalsIgnoreCase(nurseId)) {
                     tableModel.addRow(new Object[]{roster.getRosterId(),
-                        roster.getDate(), roster.getDoctor1Id(),
-                        roster.getDoctor2Id(), roster.getNurse1Id(),
-                        roster.getNurse2Id(), roster.getNurse3Id()});
+                        roster.getDate(), getStaffDisplayName(roster.getDoctor1Id()),
+                        getStaffDisplayName(roster.getDoctor2Id()),
+                        getStaffDisplayName(roster.getNurse1Id()),
+                        getStaffDisplayName(roster.getNurse2Id()),
+                        getStaffDisplayName(roster.getNurse3Id())});
                 }
             } catch (Exception ex) {
                 System.out.println("Skipped malformed roster row: " + lines.get(i));
@@ -82,5 +84,21 @@ public class NurseRosterGUI extends JFrame {
         }
 
         rosterTable.setModel(tableModel);
+    }
+
+    private String getStaffDisplayName(String staffId) {
+        ArrayList<String> users = FileHandler.readFile("users.txt");
+
+        for (int i = 0; i < users.size(); i++) {
+            String[] parts = users.get(i).split(",", -1);
+            if (parts.length == 7 && parts[0].equalsIgnoreCase(staffId)) {
+                String fullName = parts[4].trim();
+                if (!fullName.equals("")) {
+                    return staffId + " - " + fullName;
+                }
+            }
+        }
+
+        return staffId;
     }
 }
